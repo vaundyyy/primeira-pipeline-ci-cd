@@ -1,0 +1,57 @@
+name: pipeline-github-acitons
+
+on:
+  pull_request:
+    branches:
+        -main
+        -develop
+        -staging
+        -feature/*
+        -hotfix/*
+        -release/*
+    #paths:
+     # - 'docs/**'
+     # - 'scripts/*.sh'
+
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'docs/**'
+      - 'scripts/*.sh'
+    tags:
+      -v1.*
+
+  issues:
+    types: [opened, closed, reopened]  
+
+  label:
+    types: [created, edited, deleted]
+
+  schedule:
+    - cron: '30 5,17 * * 0'
+  
+  workflow_dispatch:
+    inputs:
+      environments:
+        description: 'Ambiente de deploy'
+        required: true
+        default: 'dev'
+
+env:
+  ENVIROMENT: "dev"
+
+jobs:
+  manual_test_pipeline:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: command
+      - run: echo "Teste de pipeline manual"
+
+      - name: Build my App
+      - run: echo "Build my App"
+
